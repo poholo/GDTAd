@@ -37,6 +37,8 @@
 /* Begin PBXFileReference section */
 		0ACAFA491F97933700C47AB1 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		0D9D7EE32A2A0D2BA1A06F86 /* libPods-GDTMobSample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GDTMobSample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A6663E17745063A5A6F45C6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		1A666EEE9C7A67613EECFC1A /* GDTAd.podspec */ = {isa = PBXFileReference; lastKnownFileType = file.podspec; name = GDTAd.podspec; path = ../GDTAd.podspec; sourceTree = "<group>"; };
 		454B10291ECC5DE5003FEA17 /* NativeExpressAdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NativeExpressAdViewController.h; path = GDTMobSample/GDTAdTypes/NativeExpressAdViewController.h; sourceTree = SOURCE_ROOT; };
 		454B102A1ECC5DE5003FEA17 /* NativeExpressAdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NativeExpressAdViewController.m; path = GDTMobSample/GDTAdTypes/NativeExpressAdViewController.m; sourceTree = SOURCE_ROOT; };
 		45F416301DCAE99E0010AA0D /* GDTStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = GDTStoryboard.storyboard; path = GDTMobSample/GDTAdTypes/GDTStoryboard.storyboard; sourceTree = SOURCE_ROOT; };
@@ -115,6 +117,8 @@
 				CCB6A1B41855B345005DFD0F /* Frameworks */,
 				CCB6A1B31855B345005DFD0F /* Products */,
 				35DFDD986735296CC761B414 /* Pods */,
+				1A666EEE9C7A67613EECFC1A /* GDTAd.podspec */,
+				1A6663E17745063A5A6F45C6 /* README.md */,
 			);
 			sourceTree = "<group>";
 		};
