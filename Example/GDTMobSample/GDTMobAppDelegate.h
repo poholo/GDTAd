@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+
+#import <GDTAd.h>
+
 #import "ViewController.h"
-#import "GDTSplashAd.h"
 
 @interface GDTMobAppDelegate : UIResponder <UIApplicationDelegate,GDTSplashAdDelegate>
 

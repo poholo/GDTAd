@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0ACAFA4A1F97933700C47AB1 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ACAFA491F97933700C47AB1 /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		13DF82565D37122561A869C3 /* libPods-GDTMobSample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D9D7EE32A2A0D2BA1A06F86 /* libPods-GDTMobSample.a */; };
 		454B10311ECC5DE5003FEA17 /* NativeExpressAdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 454B102A1ECC5DE5003FEA17 /* NativeExpressAdViewController.m */; };
 		45F416351DCAE99E0010AA0D /* GDTStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 45F416301DCAE99E0010AA0D /* GDTStoryboard.storyboard */; };
 		45F416361DCAE99E0010AA0D /* SplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F416321DCAE99E0010AA0D /* SplashViewController.m */; };
@@ -31,18 +32,17 @@
 		CCB6A24B1855C9F2005DFD0F /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCB6A24A1855C9F2005DFD0F /* CoreTelephony.framework */; };
 		CCB6A24D1855C9F9005DFD0F /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CCB6A24C1855C9F9005DFD0F /* libz.dylib */; };
 		CCDB246E19AC340500D17B6F /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCDB246D19AC340500D17B6F /* StoreKit.framework */; };
-		CCFBA4021C2001840093FA19 /* libGDTMobSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCFBA4011C2001840093FA19 /* libGDTMobSDK.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0ACAFA491F97933700C47AB1 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		0D9D7EE32A2A0D2BA1A06F86 /* libPods-GDTMobSample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GDTMobSample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		454B10291ECC5DE5003FEA17 /* NativeExpressAdViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NativeExpressAdViewController.h; path = GDTMobSample/GDTAdTypes/NativeExpressAdViewController.h; sourceTree = SOURCE_ROOT; };
 		454B102A1ECC5DE5003FEA17 /* NativeExpressAdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NativeExpressAdViewController.m; path = GDTMobSample/GDTAdTypes/NativeExpressAdViewController.m; sourceTree = SOURCE_ROOT; };
-		454B10351ECC5FC4003FEA17 /* GDTNativeExpressAd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDTNativeExpressAd.h; path = lib/GDTNativeExpressAd.h; sourceTree = "<group>"; };
-		454B10361ECC5FC4003FEA17 /* GDTNativeExpressAdView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDTNativeExpressAdView.h; path = lib/GDTNativeExpressAdView.h; sourceTree = "<group>"; };
 		45F416301DCAE99E0010AA0D /* GDTStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = GDTStoryboard.storyboard; path = GDTMobSample/GDTAdTypes/GDTStoryboard.storyboard; sourceTree = SOURCE_ROOT; };
 		45F416311DCAE99E0010AA0D /* SplashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SplashViewController.h; path = GDTMobSample/GDTAdTypes/SplashViewController.h; sourceTree = SOURCE_ROOT; };
 		45F416321DCAE99E0010AA0D /* SplashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SplashViewController.m; path = GDTMobSample/GDTAdTypes/SplashViewController.m; sourceTree = SOURCE_ROOT; };
+		80203DEFE7CC9F6D64522934 /* Pods-GDTMobSample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GDTMobSample.release.xcconfig"; path = "Pods/Target Support Files/Pods-GDTMobSample/Pods-GDTMobSample.release.xcconfig"; sourceTree = "<group>"; };
 		CCA347881A1C7D0700AF55B3 /* NativeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NativeViewController.h; path = GDTMobSample/GDTAdTypes/NativeViewController.h; sourceTree = SOURCE_ROOT; };
 		CCA347891A1C7D0700AF55B3 /* NativeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NativeViewController.m; path = GDTMobSample/GDTAdTypes/NativeViewController.m; sourceTree = SOURCE_ROOT; };
 		CCB21002188D19B5008C3EB5 /* InterstitialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InterstitialViewController.h; path = GDTMobSample/GDTAdTypes/InterstitialViewController.h; sourceTree = SOURCE_ROOT; };
@@ -71,13 +71,8 @@
 		CCB6A2481855C9EA005DFD0F /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		CCB6A24A1855C9F2005DFD0F /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		CCB6A24C1855C9F9005DFD0F /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		CCC5C1E21C61B9340081F04A /* GDTMobBannerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDTMobBannerView.h; path = lib/GDTMobBannerView.h; sourceTree = "<group>"; };
-		CCC5C1E31C61B9340081F04A /* GDTMobInterstitial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDTMobInterstitial.h; path = lib/GDTMobInterstitial.h; sourceTree = "<group>"; };
-		CCC5C1E41C61B9340081F04A /* GDTNativeAd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDTNativeAd.h; path = lib/GDTNativeAd.h; sourceTree = "<group>"; };
-		CCC5C1E51C61B9340081F04A /* GDTSplashAd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDTSplashAd.h; path = lib/GDTSplashAd.h; sourceTree = "<group>"; };
-		CCC5C1E61C61B9340081F04A /* GDTTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDTTrack.h; path = lib/GDTTrack.h; sourceTree = "<group>"; };
 		CCDB246D19AC340500D17B6F /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		CCFBA4011C2001840093FA19 /* libGDTMobSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGDTMobSDK.a; path = lib/libGDTMobSDK.a; sourceTree = "<group>"; };
+		EB22A9331FF62ED45968FC12 /* Pods-GDTMobSample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GDTMobSample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GDTMobSample/Pods-GDTMobSample.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,19 +92,29 @@
 				CCB6A1B81855B345005DFD0F /* CoreGraphics.framework in Frameworks */,
 				CCB6A1BA1855B345005DFD0F /* UIKit.framework in Frameworks */,
 				CCB6A1B61855B345005DFD0F /* Foundation.framework in Frameworks */,
-				CCFBA4021C2001840093FA19 /* libGDTMobSDK.a in Frameworks */,
+				13DF82565D37122561A869C3 /* libPods-GDTMobSample.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		35DFDD986735296CC761B414 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				EB22A9331FF62ED45968FC12 /* Pods-GDTMobSample.debug.xcconfig */,
+				80203DEFE7CC9F6D64522934 /* Pods-GDTMobSample.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		CCB6A1A91855B345005DFD0F = {
 			isa = PBXGroup;
 			children = (
 				CCB6A1BB1855B345005DFD0F /* GDTMobSample */,
 				CCB6A1B41855B345005DFD0F /* Frameworks */,
 				CCB6A1B31855B345005DFD0F /* Products */,
+				35DFDD986735296CC761B414 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -137,6 +142,7 @@
 				CCB6A1B71855B345005DFD0F /* CoreGraphics.framework */,
 				CCB6A1B91855B345005DFD0F /* UIKit.framework */,
 				CCB6A1CE1855B345005DFD0F /* XCTest.framework */,
+				0D9D7EE32A2A0D2BA1A06F86 /* libPods-GDTMobSample.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -159,14 +165,6 @@
 		CCB6A1BC1855B345005DFD0F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				454B10351ECC5FC4003FEA17 /* GDTNativeExpressAd.h */,
-				454B10361ECC5FC4003FEA17 /* GDTNativeExpressAdView.h */,
-				CCC5C1E21C61B9340081F04A /* GDTMobBannerView.h */,
-				CCC5C1E31C61B9340081F04A /* GDTMobInterstitial.h */,
-				CCC5C1E41C61B9340081F04A /* GDTNativeAd.h */,
-				CCC5C1E51C61B9340081F04A /* GDTSplashAd.h */,
-				CCC5C1E61C61B9340081F04A /* GDTTrack.h */,
-				CCFBA4011C2001840093FA19 /* libGDTMobSDK.a */,
 				CCB6A1BD1855B345005DFD0F /* GDTMobSample-Info.plist */,
 				CCB6A1BE1855B345005DFD0F /* InfoPlist.strings */,
 				CCB6A1C11855B345005DFD0F /* main.m */,
@@ -201,6 +199,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CCB6A1DE1855B345005DFD0F /* Build configuration list for PBXNativeTarget "GDTMobSample" */;
 			buildPhases = (
+				811ECF47B54C94389A362092 /* [CP] Check Pods Manifest.lock */,
 				CCB6A1AE1855B345005DFD0F /* Sources */,
 				CCB6A1AF1855B345005DFD0F /* Frameworks */,
 				CCB6A1B01855B345005DFD0F /* Resources */,
@@ -260,6 +259,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		811ECF47B54C94389A362092 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-GDTMobSample-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		CCB6A1AE1855B345005DFD0F /* Sources */ = {
@@ -367,6 +387,7 @@
 		};
 		CCB6A1DF1855B345005DFD0F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EB22A9331FF62ED45968FC12 /* Pods-GDTMobSample.debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -376,32 +397,26 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D8RJFY6RH2;
 				ENABLE_BITCODE = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/GDTMobSample/lib",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GDTMobSample/GDTMobSample-Prefix.pch";
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../lib";
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "GDTMobSample/GDTMobSample-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/GDTMobSample/lib",
-					"$(PROJECT_DIR)/GDTMobSample/lib",
-					"$(PROJECT_DIR)/../lib",
-				);
-				OTHER_LDFLAGS = "";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.waqu.video;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/Pods\"/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
 		};
 		CCB6A1E01855B345005DFD0F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 80203DEFE7CC9F6D64522934 /* Pods-GDTMobSample.release.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -411,26 +426,19 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D8RJFY6RH2;
 				ENABLE_BITCODE = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/GDTMobSample/lib",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GDTMobSample/GDTMobSample-Prefix.pch";
-				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/../lib";
+				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "GDTMobSample/GDTMobSample-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/GDTMobSample/lib",
-					"$(PROJECT_DIR)/GDTMobSample/lib",
-					"$(PROJECT_DIR)/../lib",
-				);
-				OTHER_LDFLAGS = "";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.waqu.video;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/Pods\"/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

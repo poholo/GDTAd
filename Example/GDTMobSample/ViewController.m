@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+
 #import "BannerViewController.h"
 #import "InterstitialViewController.h"
 #import "NativeViewController.h"
@@ -14,14 +15,13 @@
 
 @interface ViewController ()
 
-@property (nonatomic, retain)   UIStoryboard *storyBoard;
+@property(nonatomic, retain) UIStoryboard *storyBoard;
 
 @end
 
 @implementation ViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -29,32 +29,28 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
- 
-    demoTitles = [[NSArray alloc] initWithObjects:@"Banner广告",@"插屏广告",@"原生广告",@"开屏广告", @"原生模板广告", nil];
+    // Do any additional setup after loading the view.
+
+    demoTitles = [[NSArray alloc] initWithObjects:@"Banner广告", @"插屏广告", @"原生广告", @"开屏广告", @"原生模板广告", nil];
     _storyBoard = [UIStoryboard storyboardWithName:@"GDTStoryboard" bundle:nil];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [demoTitles count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+
     static NSString *SimpleTableIdentifier = @"SimpleTableIdentifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SimpleTableIdentifier];
-    
+
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SimpleTableIdentifier];
     }
@@ -62,8 +58,7 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     switch (indexPath.row) {
         case 0:
@@ -85,33 +80,28 @@
     }
 }
 
--(void)showBannerView
-{
+- (void)showBannerView {
     UIViewController *viewcontroller = [_storyBoard instantiateViewControllerWithIdentifier:@"gdtbannerviewcontroller"];
     [self.navigationController pushViewController:viewcontroller animated:YES];
 }
 
--(void)showInterstitialView
-{
+- (void)showInterstitialView {
     UIViewController *viewcontroller = [_storyBoard instantiateViewControllerWithIdentifier:@"gdtinterstitialviewcontroller"];
-    
+
     [self.navigationController pushViewController:viewcontroller animated:YES];
 }
 
--(void)showNativeView
-{
+- (void)showNativeView {
     UIViewController *viewcontroller = [_storyBoard instantiateViewControllerWithIdentifier:@"gdtnativeviewcontroller"];
     [self.navigationController pushViewController:viewcontroller animated:YES];
 }
 
--(void)showSplashView
-{
+- (void)showSplashView {
     UIViewController *viewcontroller = [_storyBoard instantiateViewControllerWithIdentifier:@"gdtsplashviewcontroller"];
     [self.navigationController pushViewController:viewcontroller animated:YES];
 }
 
-- (void)showNativeExpressView
-{
+- (void)showNativeExpressView {
     UIViewController *viewcontroller = [_storyBoard instantiateViewControllerWithIdentifier:@"gdtnativeexpressviewcontroller"];
     [self.navigationController pushViewController:viewcontroller animated:YES];
 }

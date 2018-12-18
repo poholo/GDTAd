@@ -7,8 +7,9 @@
 //
 
 #import "NativeExpressAdViewController.h"
-#import "GDTNativeExpressAd.h"
-#import "GDTNativeExpressAdView.h"
+
+#import <GDTAd.h>
+
 
 @interface NativeExpressAdViewController ()<GDTNativeExpressAdDelegete>
 

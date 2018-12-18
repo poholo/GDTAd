@@ -7,7 +7,8 @@
 //
 
 #import "SplashViewController.h"
-#import "GDTSplashAd.h"
+
+#import <GDTAd.h>
 
 @implementation SplashViewController
 {

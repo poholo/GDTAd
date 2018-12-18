@@ -7,7 +7,8 @@
 //
 
 #import "NativeViewController.h"
-#import "GDTNativeAd.h"
+
+#import <GDTAd.h>
 
 @interface NativeViewController ()<GDTNativeAdDelegate>
 {

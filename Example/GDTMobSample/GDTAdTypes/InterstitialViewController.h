@@ -8,8 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "GDTMobInterstitial.h"
-#import "GDTMobBannerView.h"
+#import <GDTAd.h>
 
 @interface InterstitialViewController : UIViewController<GDTMobInterstitialDelegate>
 {
