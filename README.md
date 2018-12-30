@@ -13,4 +13,4 @@ pod 'GDTAd'
 ```
 
 # license
-MCBaiduAds under MIT license.
+GDTAd under MIT license.
