@@ -7,66 +7,44 @@
 //
 
 #import "NativeViewController.h"
-
-#import <GDTAd.h>
+#import "GDTNativeAd.h"
+#import "AppDelegate.h"
 
 @interface NativeViewController ()<GDTNativeAdDelegate>
 {
-    GDTNativeAd *_nativeAd;     //原生广告实例
-    NSArray *_data;             //原生广告数据数组
-    GDTNativeAdData *_currentAd;//当前展示的原生广告数据对象
-    UIView *_adView;            //当前展示的原生广告界面
-    
     // 业务相关
     BOOL _attached;
 }
 
-@property (weak, nonatomic) IBOutlet UITextView *resultTV;
+@property (nonatomic, strong) GDTNativeAd *nativeAd;
+@property (nonatomic, strong) NSArray *adArray;
+@property (nonatomic, strong) GDTNativeAdData *currentAdData;
+@property (nonatomic, strong) UIView *adView;
+@property (weak, nonatomic) IBOutlet UITextView *responseTextView;
 @property (weak, nonatomic) IBOutlet UITextField *posTextField;
 
 @end
 
 @implementation NativeViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [super touchesBegan:touches withEvent:event];
+    [self.view endEditing:YES];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+#pragma mark - event response
 - (IBAction)loadAd:(id)sender {
     if (_attached) {
-        [UIView animateWithDuration:0.5 animations:^{
-            CGRect adviewFrame = _adView.frame;
-            adviewFrame.origin.x += [[UIScreen mainScreen] bounds].size.width;
-            _adView.frame = adviewFrame;
-            CGRect textViewFrame = _resultTV.frame;
-            textViewFrame.origin.x += [[UIScreen mainScreen] bounds].size.width;
-            _resultTV.frame = textViewFrame;
-            
-        } completion:^(BOOL finished) {
-            [_adView removeFromSuperview];
-            _adView = nil;
-        }];
+        [self.adView removeFromSuperview];
+        self.adView = nil;
         _attached = NO;
     }
     
     /*
      * 创建原生广告
-     * "appkey" 指在 http://e.qq.com/dev/ 能看到的app唯一字符串
+     * "appId" 指在 http://e.qq.com/dev/ 能看到的app唯一字符串
      * "placementId" 指在 http://e.qq.com/dev/ 生成的数字串，广告位id
      *
      * 本原生广告位ID在联盟系统中创建时勾选的详情图尺寸为1280*720，开发者可以根据自己应用的需要
@@ -75,31 +53,27 @@
      * 这里详情图以1280*720为例
      */
     
-    _nativeAd = [[GDTNativeAd alloc] initWithAppkey:@"1105344611" placementId:_posTextField.text];
-    _nativeAd.controller = self;
-    _nativeAd.delegate = self;
+    self.nativeAd = [[GDTNativeAd alloc] initWithAppId:kGDTMobSDKAppId placementId:_posTextField.text];
+    self.nativeAd.controller = self;
+    self.nativeAd.delegate = self;
     
     /*
      * 拉取广告,传入参数为拉取个数。
      * 发起拉取广告请求,在获得广告数据后回调delegate
      */
-    [_nativeAd loadAd:5]; //这里以一次拉取一条原生广告为例
+    [self.nativeAd loadAd:1]; //这里以一次拉取一条原生广告为例
     
 }
+
 - (IBAction)attach:(id)sender {
-    if (_data && !_attached) {
+    if (self.adArray.count > 0 && !_attached) {
         /*选择展示广告*/
-        _currentAd = [_data objectAtIndex:0];
-        
-        /*开始渲染广告界面*/
-        _adView = [[UIView alloc] initWithFrame:CGRectMake(320, 150, 320, 250)];
-        _adView.layer.borderWidth = 1;
-        _adView.backgroundColor = [UIColor whiteColor];
+        self.currentAdData = self.adArray[0];
         
         /*广告详情图*/
         UIImageView *imgV = [[UIImageView alloc] initWithFrame:CGRectMake(2, 70, 316, 176)];
-        [_adView addSubview:imgV];
-        NSURL *imageURL = [NSURL URLWithString:[_currentAd.properties objectForKey:GDTNativeAdDataKeyImgUrl]];
+        [self.adView addSubview:imgV];
+        NSURL *imageURL = [NSURL URLWithString:[self.currentAdData.properties objectForKey:GDTNativeAdDataKeyImgUrl]];
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
             NSData *imageData = [NSData dataWithContentsOfURL:imageURL];
@@ -110,8 +84,8 @@
         
         /*广告Icon*/
         UIImageView *iconV = [[UIImageView alloc] initWithFrame:CGRectMake(10, 5, 60, 60)];
-        [_adView addSubview:iconV];
-        NSURL *iconURL = [NSURL URLWithString:[_currentAd.properties objectForKey:GDTNativeAdDataKeyIconUrl]];
+        [self.adView addSubview:iconV];
+        NSURL *iconURL = [NSURL URLWithString:[self.currentAdData.properties objectForKey:GDTNativeAdDataKeyIconUrl]];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
             NSData *imageData = [NSData dataWithContentsOfURL:iconURL];
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -120,66 +94,66 @@
         });
         
         /*广告标题*/
-        UILabel *txt = [[UILabel alloc] initWithFrame:CGRectMake(80, 5, 100, 35)];
-        txt.text = [_currentAd.properties objectForKey:GDTNativeAdDataKeyTitle];
-        [_adView addSubview:txt];
+        UILabel *txt = [[UILabel alloc] initWithFrame:CGRectMake(80, 5, 220, 35)];
+        txt.text = [self.currentAdData.properties objectForKey:GDTNativeAdDataKeyTitle];
+        [self.adView addSubview:txt];
         
         /*广告描述*/
-        UILabel *desc = [[UILabel alloc] initWithFrame:CGRectMake(80, 45, 200, 20)];
-        desc.text = [_currentAd.properties objectForKey:GDTNativeAdDataKeyDesc];
-        [_adView addSubview:desc];
+        UILabel *desc = [[UILabel alloc] initWithFrame:CGRectMake(80, 45, 220, 20)];
+        desc.text = [self.currentAdData.properties objectForKey:GDTNativeAdDataKeyDesc];
+        [self.adView addSubview:desc];
         
-        [self.view addSubview:_adView];
+        CGRect adviewFrame = self.adView.frame;
+        adviewFrame.origin.x = [[UIScreen mainScreen] bounds].size.width + adviewFrame.origin.x;
+        self.adView.frame = adviewFrame;
+        [self.view addSubview:self.adView];
         
-        /*注册点击事件*/
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTapped:)];
-        [_adView addGestureRecognizer:tap];
+        [self.adView addGestureRecognizer:tap];
         
-        //动画开始
         [UIView animateWithDuration:0.5 animations:^{
-            CGRect adviewFrame = _adView.frame;
-            adviewFrame.origin.x -= [[UIScreen mainScreen] bounds].size.width;
-            _adView.frame = adviewFrame;
-            CGRect textViewFrame = _resultTV.frame;
-            textViewFrame.origin.x -= [[UIScreen mainScreen] bounds].size.width;
-            _resultTV.frame = textViewFrame;
+            self.adView.center = self.responseTextView.center;
         } completion:nil];
         
         /*
          * 广告数据渲染完毕，即将展示时需调用AttachAd方法。
          */
-        [_nativeAd attachAd:_currentAd toView:_adView];
+        [self.nativeAd attachAd:self.currentAdData toView:self.adView];
         
         _attached = YES;
         
     } else if (_attached){
-        _resultTV.text = @"Already attached";
+        self.responseTextView.text = @"Already attached";
     } else {
-        _resultTV.text = @"原生广告数据拉取失败，无法Attach";
+        self.responseTextView.text = @"原生广告数据拉取失败，无法Attach";
     }
 
 }
 
 - (void)viewTapped:(UITapGestureRecognizer *)gr {
     /*点击发生，调用点击接口*/
-    [_nativeAd clickAd:_currentAd];
+    [self.nativeAd clickAd:self.currentAdData];
 }
 
-
+#pragma mark - GDTNativeAdDelegate
 -(void)nativeAdSuccessToLoad:(NSArray *)nativeAdDataArray
 {
     NSLog(@"%s",__FUNCTION__);
     /*广告数据拉取成功，存储并展示*/
-    _data = nativeAdDataArray;
+    self.adArray = nativeAdDataArray;
     dispatch_async(dispatch_get_main_queue(), ^{
         NSMutableString *result = [NSMutableString string];
         [result appendString:@"原生广告返回数据:\n"];
         for (GDTNativeAdData *data in nativeAdDataArray) {
-            [result appendFormat:@"%@",data.properties];
+            NSData *d = [[data.properties description] dataUsingEncoding:NSUTF8StringEncoding];
+            NSString *decodevalue = [[NSString alloc] initWithData:d encoding:NSNonLossyASCIIStringEncoding];;
+            [result appendFormat:@"%@",decodevalue];
+            [result appendFormat:@"\nisAppAd:%@",data.isAppAd ? @"YES":@"NO"];
+            [result appendFormat:@"\nisThreeImgsAd:%@",data.isThreeImgsAd ? @"YES":@"NO"];
             [result appendString:@"\n------------------------"];
         }
         
-        _resultTV.text = result;
+        self.responseTextView.text = result;
     });
 }
 
@@ -187,9 +161,9 @@
 {
     NSLog(@"%@",error);
     /*广告数据拉取失败*/
-    _data = nil;
+    self.currentAdData = nil;
     dispatch_async(dispatch_get_main_queue(), ^{
-        _resultTV.text = [NSString stringWithFormat:@"原生广告数据拉取失败, %@\n",error];
+        self.responseTextView.text = [NSString stringWithFormat:@"原生广告数据拉取失败, %@\n",error];
     });
 }
 
@@ -212,5 +186,17 @@
 - (void)nativeAdClosed
 {
     NSLog(@"%s",__FUNCTION__);
+}
+
+#pragma mark - property getter
+- (UIView *)adView
+{
+    if (!_adView) {
+        _adView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 260)];
+        _adView.center = self.responseTextView.center;
+        _adView.layer.borderWidth = 1;
+        _adView.backgroundColor = [UIColor whiteColor];
+    }
+    return _adView;
 }
 @end

@@ -2,6 +2,12 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, "8.0"
 
+project './GDTMobSample.xcodeproj'
 target "GDTMobSample" do
- pod "GDTAd", git: "https://github.com/poholo/GDTAd"
+  pod "GDTAd", path: "../"
 end
+
+#project './GDTMobSample-Swift.xcodeproj'
+#target "GDTMobSample-Swift" do
+#  pod "GDTAd", path: "../"
+#end

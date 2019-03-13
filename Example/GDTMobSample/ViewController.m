@@ -1,109 +1,113 @@
 //
 //  ViewController.m
-//  GDTMobSample
+//  GDTTestDemo
 //
-//  Created by GaoChao on 13-10-31.
-//  Copyright (c) 2013年 Tencent. All rights reserved.
+//  Created by 高超 on 13-10-31.
+//  Copyright (c) 2013年 高超. All rights reserved.
 //
 
 #import "ViewController.h"
+#import <AdSupport/ASIdentifierManager.h>
+#import <objc/runtime.h>
 
 #import "BannerViewController.h"
 #import "InterstitialViewController.h"
-#import "NativeViewController.h"
 #import "SplashViewController.h"
+#import "NativeViewController.h"
+#import "NativeExpressAdViewController.h"
+#import "NativeExpressVideoAdViewController.h"
+#import "RewardVideoViewController.h"
+#import "UnifiedNativeAdViewController.h"
 
 @interface ViewController ()
 
-@property(nonatomic, retain) UIStoryboard *storyBoard;
+
+@property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) UIStoryboard *storyBoard;
+
 
 @end
 
 @implementation ViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.demoArray.count;
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-
-    demoTitles = [[NSArray alloc] initWithObjects:@"Banner广告", @"插屏广告", @"原生广告", @"开屏广告", @"原生模板广告", nil];
-    _storyBoard = [UIStoryboard storyboardWithName:@"GDTStoryboard" bundle:nil];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [demoTitles count];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     static NSString *SimpleTableIdentifier = @"SimpleTableIdentifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SimpleTableIdentifier];
-
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SimpleTableIdentifier];
     }
-    cell.textLabel.text = demoTitles[indexPath.row];
+    cell.textLabel.text = self.demoArray[indexPath.row];
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    switch (indexPath.row) {
-        case 0:
-            [self showBannerView];
-            break;
-        case 1:
-            [self showInterstitialView];
-            break;
-        case 2:
-            [self showNativeView];
-            break;
-        case 3:
-            [self showSplashView];
-            break;
-        case 4:
-            [self showNativeExpressView];
-        default:
-            break;
+    id item = self.demoDict[self.demoArray[indexPath.row]];
+    if (class_isMetaClass(object_getClass(item))) {
+        UIViewController *vc = [self.storyBoard instantiateViewControllerWithIdentifier:NSStringFromClass(item)];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([item isKindOfClass:[NSString class]]) {
+        UIViewController *vc = [[NSClassFromString(item) alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        NSString *idfa = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+        NSString *idfaCopyedMsg = [NSString stringWithFormat:@"%@\n 已经复制到你的粘贴板",idfa];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:idfaCopyedMsg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//        sync idfa to pasteboard
+        UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+        pasteboard.string = idfa;
+        [alert show];
     }
 }
 
-- (void)showBannerView {
-    UIViewController *viewcontroller = [_storyBoard instantiateViewControllerWithIdentifier:@"gdtbannerviewcontroller"];
-    [self.navigationController pushViewController:viewcontroller animated:YES];
+#pragma mark - property getter
+- (UIStoryboard *)storyBoard
+{
+    if (!_storyBoard) {
+        _storyBoard = [UIStoryboard storyboardWithName:@"GDTStoryboard" bundle:nil];
+    }
+    return _storyBoard;
 }
 
-- (void)showInterstitialView {
-    UIViewController *viewcontroller = [_storyBoard instantiateViewControllerWithIdentifier:@"gdtinterstitialviewcontroller"];
-
-    [self.navigationController pushViewController:viewcontroller animated:YES];
+- (NSMutableArray *)demoArray
+{
+    if (!_demoArray) {
+        _demoArray = [@[@"Banner",
+                        @"插屏",
+                        @"原生广告",
+                        @"开屏广告",
+                        @"原生模板广告",
+                        @"原生视频模板广告",
+                        @"激励视频广告",
+                        @"自渲染2.0",
+                        @"获取IDFA"] mutableCopy];
+    }
+    return _demoArray;
 }
 
-- (void)showNativeView {
-    UIViewController *viewcontroller = [_storyBoard instantiateViewControllerWithIdentifier:@"gdtnativeviewcontroller"];
-    [self.navigationController pushViewController:viewcontroller animated:YES];
-}
-
-- (void)showSplashView {
-    UIViewController *viewcontroller = [_storyBoard instantiateViewControllerWithIdentifier:@"gdtsplashviewcontroller"];
-    [self.navigationController pushViewController:viewcontroller animated:YES];
-}
-
-- (void)showNativeExpressView {
-    UIViewController *viewcontroller = [_storyBoard instantiateViewControllerWithIdentifier:@"gdtnativeexpressviewcontroller"];
-    [self.navigationController pushViewController:viewcontroller animated:YES];
+- (NSMutableDictionary *)demoDict
+{
+    if (!_demoDict) {
+        _demoDict = [@{@"Banner": [BannerViewController class],
+                       @"插屏": [InterstitialViewController class],
+                       @"原生广告": [NativeViewController class],
+                       @"开屏广告": [SplashViewController class],
+                       @"原生模板广告": [NativeExpressAdViewController class],
+                       @"原生视频模板广告": [NativeExpressVideoAdViewController class],
+                       @"激励视频广告": [RewardVideoViewController class],
+                       @"自渲染2.0": [UnifiedNativeAdViewController class],
+                       @"获取IDFA": @(1),
+                       } mutableCopy];
+    }
+    return _demoDict;
 }
 
 @end

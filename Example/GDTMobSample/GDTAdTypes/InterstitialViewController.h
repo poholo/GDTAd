@@ -8,16 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-#import <GDTAd.h>
+@interface InterstitialViewController : UIViewController
 
-@interface InterstitialViewController : UIViewController<GDTMobInterstitialDelegate>
-{
-    GDTMobInterstitial *_interstitialObj;
-    
-}
 
-@property (unsafe_unretained, nonatomic) IBOutlet UILabel *interstitialStateLabel;
-- (IBAction)showAd:(id)sender;
-- (IBAction)loadAd:(id)sender;
 
 @end

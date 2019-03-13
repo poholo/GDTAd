@@ -7,29 +7,24 @@
 //
 
 #import "NativeExpressAdViewController.h"
+#import "GDTNativeExpressAd.h"
+#import "GDTNativeExpressAdView.h"
+#import "AppDelegate.h"
 
-#import <GDTAd.h>
+@interface NativeExpressAdViewController ()<GDTNativeExpressAdDelegete,UITableViewDelegate,UITableViewDataSource>
 
+@property (nonatomic, strong) NSMutableArray *expressAdViews;
 
-@interface NativeExpressAdViewController ()<GDTNativeExpressAdDelegete>
+@property (nonatomic, strong) GDTNativeExpressAd *nativeExpressAd;
 
-// 用于请求原生模板广告，注意：不要在广告打开期间释放！
-@property (nonatomic, retain)   GDTNativeExpressAd *nativeExpressAd;
-
-// 存储返回的GDTNativeExpressAdView
-@property (nonatomic, retain)       NSArray *expressAdViews;
-
-// 当前展示模板广告的View（开发者可以自己设置）
-@property (weak, nonatomic) IBOutlet UIView *expressAdView;
-
-
-
-@property (weak, nonatomic) IBOutlet UILabel *positionWLabel;
-@property (weak, nonatomic) IBOutlet UISlider *positionW;
-
-@property (weak, nonatomic) IBOutlet UILabel *positionHLabel;
-@property (weak, nonatomic) IBOutlet UISlider *positionH;
-@property (weak, nonatomic) IBOutlet UITextField *positionIDTextField;
+@property (weak, nonatomic) IBOutlet UILabel *widthLabel;
+@property (weak, nonatomic) IBOutlet UISlider *widthSlider;
+@property (weak, nonatomic) IBOutlet UILabel *heightLabel;
+@property (weak, nonatomic) IBOutlet UISlider *heightSlider;
+@property (weak, nonatomic) IBOutlet UISlider *adCountSlider;
+@property (weak, nonatomic) IBOutlet UILabel *adCountLabel;
+@property (weak, nonatomic) IBOutlet UITextField *placementIdTextField;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
@@ -40,114 +35,139 @@
     
     self.automaticallyAdjustsScrollViewInsets = NO;
     
+    self.widthSlider.value = [UIScreen mainScreen].bounds.size.width;
+    self.heightSlider.value = 50;
+    self.adCountSlider.value = 3;
     
-    //默认值
-    self.positionW.value = 300;
-    self.positionH.value = 200;
+    self.widthLabel.text = [NSString stringWithFormat:@"宽：%@", @(self.widthSlider.value)];
+    self.heightLabel.text = [NSString stringWithFormat:@"高：%@", @(self.heightSlider.value)];
+    self.adCountLabel.text = [NSString stringWithFormat:@"count:%@", @(self.adCountSlider.value)];
     
-    self.positionWLabel.text = [NSString stringWithFormat:@"宽：300"];
-    self.positionHLabel.text = [NSString stringWithFormat:@"高：200"];
+    self.nativeExpressAd = [[GDTNativeExpressAd alloc] initWithAppId:kGDTMobSDKAppId
+                                                         placementId:self.placementIdTextField.text
+                                                              adSize:CGSizeMake(self.widthSlider.value, self.heightSlider.value)];
+    self.nativeExpressAd.delegate = self;
+    [self.nativeExpressAd loadAd:(NSInteger)self.adCountSlider.value];
     
-    [self.positionW addTarget:self action:@selector(sliderPositionWChanged) forControlEvents:UIControlEventValueChanged];
-    [self.positionH addTarget:self action:@selector(sliderPositionHChanged) forControlEvents:UIControlEventValueChanged];
+    [self.widthSlider addTarget:self action:@selector(sliderPositionWChanged) forControlEvents:UIControlEventValueChanged];
+    [self.heightSlider addTarget:self action:@selector(sliderPositionHChanged) forControlEvents:UIControlEventValueChanged];
+    [self.adCountSlider addTarget:self action:@selector(sliderPositionCountChanged) forControlEvents:UIControlEventValueChanged];
+    
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"nativeexpresscell"];
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"splitnativeexpresscell"];
 }
 
 - (IBAction)refreshButton:(id)sender {
-    
-    self.nativeExpressAd = [[GDTNativeExpressAd alloc] initWithAppkey:@"1105344611" placementId:self.positionIDTextField.text adSize:CGSizeMake(300, 200)];
+    self.nativeExpressAd = [[GDTNativeExpressAd alloc] initWithAppId:kGDTMobSDKAppId
+                                                         placementId:self.placementIdTextField.text
+                                                              adSize:CGSizeMake(self.widthSlider.value, self.heightSlider.value)];
     self.nativeExpressAd.delegate = self;
-
-    // 拉取5条广告
-    [self.nativeExpressAd loadAd:5];
+    [self.nativeExpressAd loadAd:(NSInteger)self.adCountSlider.value];
 }
 
 - (void)sliderPositionWChanged {
-
-    self.positionWLabel.text = [NSString stringWithFormat:@"宽：%.0f",self.positionW.value];
+    self.widthLabel.text = [NSString stringWithFormat:@"宽：%.0f",self.widthSlider.value];
 }
 
 - (void)sliderPositionHChanged {
-    
-    self.positionHLabel.text = [NSString stringWithFormat:@"高：%.0f",self.positionH.value];
-
+    self.heightLabel.text = [NSString stringWithFormat:@"高：%.0f",self.heightSlider.value];
 }
--(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+
+- (void)sliderPositionCountChanged {
+    self.adCountLabel.text = [NSString stringWithFormat:@"count:%d",(int)self.adCountSlider.value];
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [super touchesBegan:touches withEvent:event];
     [self.view endEditing:YES];
 }
 
+#pragma mark - GDTNativeExpressAdDelegete
 /**
  * 拉取广告成功的回调
  */
 - (void)nativeExpressAdSuccessToLoad:(GDTNativeExpressAd *)nativeExpressAd views:(NSArray<__kindof GDTNativeExpressAdView *> *)views
 {
-    [self.expressAdViews enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        GDTNativeExpressAdView *adView = (GDTNativeExpressAdView *)obj;
-        [adView removeFromSuperview];
-    }];
-    
-    self.expressAdViews = [NSArray arrayWithArray:views];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-variable"
-    UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
-    //vc = [self navigationController];
-#pragma clang diagnostic pop
-    
+    self.expressAdViews = [NSMutableArray arrayWithArray:views];
     if (self.expressAdViews.count) {
-        
-        // 取一个GDTNativeExpressAdView
-        GDTNativeExpressAdView *expressView =  [self.expressAdViews objectAtIndex:0];
-        // 设置frame，开发者自己设置
-        expressView.frame = CGRectMake(0, 0, self.positionW.value, self.positionH.value);
-        expressView.controller = rootViewController;
-        
-        [expressView render];
-        
-        //添加View的时机，开发者控制
-        [self.expressAdView addSubview:expressView];
-       
+        [self.expressAdViews enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            GDTNativeExpressAdView *expressView = (GDTNativeExpressAdView *)obj;
+            expressView.controller = self;
+            [expressView render];
+        }];
     }
-   
+    [self.tableView reloadData];
 }
 
-/**
- * 拉取广告失败的回调
- */
-- (void)nativeExpressAdFailToLoad:(GDTNativeExpressAd *)nativeExpressAd error:(NSError *)error {
-   
-}
 /**
  * 拉取广告失败的回调
  */
 - (void)nativeExpressAdRenderFail:(GDTNativeExpressAdView *)nativeExpressAdView
 {
-    NSLog(@"%s",__FUNCTION__);
+}
+
+/**
+ * 拉取原生模板广告失败
+ */
+- (void)nativeExpressAdFailToLoad:(GDTNativeExpressAd *)nativeExpressAd error:(NSError *)error
+{
+    NSLog(@"Express Ad Load Fail : %@",error);
 }
 
 - (void)nativeExpressAdViewRenderSuccess:(GDTNativeExpressAdView *)nativeExpressAdView
 {
-    NSLog(@"%s",__FUNCTION__);
+    [self.tableView reloadData];
 }
 
 - (void)nativeExpressAdViewClicked:(GDTNativeExpressAdView *)nativeExpressAdView
 {
-    NSLog(@"%s",__FUNCTION__);
+    
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)nativeExpressAdViewClosed:(GDTNativeExpressAdView *)nativeExpressAdView
+{
+    NSLog(@"--------%s-------",__FUNCTION__);
+    [self.expressAdViews removeObject:nativeExpressAdView];
+    [self.tableView reloadData];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+#pragma mark - UITableViewDelegate
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row % 2 == 0) {
+        UIView *view = [self.expressAdViews objectAtIndex:indexPath.row / 2];
+        return view.bounds.size.height;
+    }
+    else {
+        return 44;
+    }
 }
-*/
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.expressAdViews.count * 2;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = nil;
+    if (indexPath.row % 2 == 0) {
+        cell = [self.tableView dequeueReusableCellWithIdentifier:@"nativeexpresscell" forIndexPath:indexPath];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        UIView *subView = (UIView *)[cell.contentView viewWithTag:1000];
+        if ([subView superview]) {
+            [subView removeFromSuperview];
+        }
+        UIView *view = [self.expressAdViews objectAtIndex:indexPath.row / 2];
+        view.tag = 1000;
+        [cell.contentView addSubview:view];
+    } else {
+        cell = [self.tableView dequeueReusableCellWithIdentifier:@"splitnativeexpresscell" forIndexPath:indexPath];
+        cell.backgroundColor = [UIColor grayColor];
+    }
+    return cell;
+}
 
 @end

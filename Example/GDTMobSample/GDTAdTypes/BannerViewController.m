@@ -6,114 +6,99 @@
 //  Copyright (c) 2013年 高超. All rights reserved.
 //
 
-#define IS_OS_7_OR_LATER    ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
-
 #import "BannerViewController.h"
 #import "GDTMobBannerView.h"
-#import "InterstitialViewController.h"
+#import "AppDelegate.h"
+
+@interface BannerViewController() <GDTMobBannerViewDelegate>
+
+@property (nonatomic, strong) GDTMobBannerView *bannerView;
+
+@property (weak, nonatomic) IBOutlet UITextField *placementIdText;
+@property (weak, nonatomic) IBOutlet UITextField *refreshIntervalText;
+@property (weak, nonatomic) IBOutlet UISwitch *gpsSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *animationSwitch;
+@property (weak, nonatomic) IBOutlet UISwitch *closeBtnSwitch;
+
+@end
 
 @implementation BannerViewController
 
-- (void) viewWillDisappear:(BOOL)animated {
-    NSLog(@"Banner viewWillDisappear");
-    
-}
-
+#pragma mark - lifeCycle
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"Banner view did load");
-    
-    // Custom initialization
-    NSString *appkey = @"1105344611";
-    NSString *posId = @"4090812164690039";
-    
-    NSLog(@"Banner view init");
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        bannerView = [[GDTMobBannerView alloc] initWithFrame:CGRectMake(0,0,GDTMOB_AD_SUGGEST_SIZE_728x90.width,GDTMOB_AD_SUGGEST_SIZE_728x90.height)
-                                                      appkey:appkey placementId:posId];
-    } else {
-        bannerView = [[GDTMobBannerView alloc] initWithFrame:CGRectMake(0,0,GDTMOB_AD_SUGGEST_SIZE_320x50.width,GDTMOB_AD_SUGGEST_SIZE_320x50.height)
-                                                      appkey:appkey placementId:posId];
-    }
-
-    
-    if (IS_OS_7_OR_LATER) {
-        self.extendedLayoutIncludesOpaqueBars = NO;
-        self.edgesForExtendedLayout = UIRectEdgeBottom | UIRectEdgeLeft | UIRectEdgeRight;
-    }
-    
-    bannerView.delegate = self;
-    bannerView.currentViewController = [[UIApplication sharedApplication] keyWindow].rootViewController;
-    bannerView.isAnimationOn = NO;
-    bannerView.showCloseBtn = NO;
-    bannerView.isGpsOn = YES;
-    [bannerView loadAdAndShow];
-
-//    UIWindow *fK = [[UIApplication sharedApplication] keyWindow];
-//    [fK addSubview:bannerView];
-    [self.view addSubview:bannerView];
+    [self clickLoadAd:nil];
 }
 
-- (void)didReceiveMemoryWarning
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-    NSLog(@"receive Memory Warning");
+    [super touchesBegan:touches withEvent:event];
+    [self.view endEditing:YES];
 }
 
-- (IBAction)load:(id)sender {
-    [self unLoad:nil];
-    
-    NSString *appkey = [_appKeyText text];
-    NSString *placementId = [_placementIdText text];
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        bannerView = [[GDTMobBannerView alloc] initWithFrame:CGRectMake(0,0,GDTMOB_AD_SUGGEST_SIZE_728x90.width,GDTMOB_AD_SUGGEST_SIZE_728x90.height)
-                                                      appkey:appkey placementId:placementId];
-    } else {
-        bannerView = [[GDTMobBannerView alloc] initWithFrame:CGRectMake(0,0,GDTMOB_AD_SUGGEST_SIZE_320x50.width,GDTMOB_AD_SUGGEST_SIZE_320x50.height)
-                                                      appkey:appkey placementId:placementId];
-    }
-
-    /*bannerView2 = [[GDTMobBannerView alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen] bounds].size.width / 2 ), 0,
-     bannerWidth,
-     50)
-     appkey:appkey placementId:placementId];*/
-    
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-variable"
-    int interval =  [[_refreshIntervalText text] intValue];
-#pragma clang diagnostic pop
-    
-    bool gpsEnabled = _gpsSwitch.on;
-    
-    
-    bannerView.delegate = self;
-    bannerView.isAnimationOn = _animationSwitch.on;
-    bannerView.showCloseBtn = _closeBtnSwitch.on;
-    bannerView.currentViewController = self.navigationController;
-    bannerView.interval = 10;
-    bannerView.isGpsOn = gpsEnabled;
-    [bannerView loadAdAndShow];
-
-    [self.view addSubview:bannerView];
-    
-    
-}
-
-- (IBAction)unLoad:(id)sender {
-    
-    [bannerView removeFromSuperview];
-    bannerView = nil;
-    /*[bannerView2 removeFromSuperview];
-     bannerView2 = nil;*/
-}
-
-- (void)bannerViewMemoryWarning
+#pragma mark - property getter
+- (GDTMobBannerView *)bannerView
 {
-    NSLog(@"did receive memory warning");
+    if (!_bannerView) {
+        CGRect rect = {CGPointZero, GDTMOB_AD_SUGGEST_SIZE_320x50};
+        _bannerView = [[GDTMobBannerView alloc] initWithFrame:rect appId:kGDTMobSDKAppId placementId:self.placementIdText.text];
+        _bannerView.currentViewController = self;
+        _bannerView.interval = [self.refreshIntervalText.text intValue];
+        _bannerView.isAnimationOn = self.animationSwitch.on;
+        _bannerView.showCloseBtn = self.closeBtnSwitch.on;
+        _bannerView.isGpsOn = self.gpsSwitch.on;
+        _bannerView.delegate = self;
+    }
+    return _bannerView;
 }
 
+#pragma mark - event repsonse
+- (IBAction)clickLoadAd:(id)sender {
+    [self clickRemoveAd:nil];
+    [self.view addSubview:self.bannerView];
+    //使用 Auto Layout 布局，也可使用 frame 布局。
+    self.bannerView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addConstraints:@[
+                           [NSLayoutConstraint constraintWithItem:self.bannerView
+                                                        attribute:NSLayoutAttributeTop
+                                                        relatedBy:NSLayoutRelationEqual
+                                                           toItem:self.view
+                                                        attribute:NSLayoutAttributeTop
+                                                       multiplier:1.0
+                                                         constant:0],
+                           [NSLayoutConstraint constraintWithItem:self.bannerView
+                                                        attribute:NSLayoutAttributeLeading
+                                                        relatedBy:NSLayoutRelationEqual
+                                                           toItem:self.view
+                                                        attribute:NSLayoutAttributeLeading
+                                                       multiplier:1.0
+                                                         constant:0],
+                           [NSLayoutConstraint constraintWithItem:self.bannerView
+                                                        attribute:NSLayoutAttributeTrailing
+                                                        relatedBy:NSLayoutRelationEqual
+                                                           toItem:self.view
+                                                        attribute:NSLayoutAttributeTrailing
+                                                       multiplier:1.0
+                                                         constant:0]
+                           ]];
+    [self.bannerView addConstraint:[NSLayoutConstraint constraintWithItem:self.bannerView
+                                                                attribute:NSLayoutAttributeHeight
+                                                                relatedBy:NSLayoutRelationEqual
+                                                                   toItem:nil
+                                                                attribute:NSLayoutAttributeNotAnAttribute
+                                                               multiplier:1.0
+                                                                 constant:50]];
+    [self.bannerView loadAdAndShow];
+}
+
+- (IBAction)clickRemoveAd:(id)sender {
+    [self.bannerView removeFromSuperview];
+    self.bannerView = nil;
+}
+
+
+#pragma mark - GDTMobBannerViewDelegate
 // 请求广告条数据成功后调用
 //
 // 详解:当接收服务器返回的广告数据成功后调用该函数
@@ -146,17 +131,7 @@
 {
     NSLog(@"banner leave application");
 }
-- (IBAction)didEndOnExit:(id)sender {
-    [sender resignFirstResponder];
-}
 
-- (IBAction)testGotoAnotherView:(id)sender {
-    
-    InterstitialViewController *_viewC = [[InterstitialViewController alloc] init];
-
-    [self.navigationController pushViewController:_viewC animated:YES];
-    
-}
 
 -(void)bannerViewDidDismissFullScreenModal
 {
@@ -178,14 +153,4 @@
     NSLog(@"%s",__FUNCTION__);
 }
 
-
-- (void)setVisible
-{
-    bannerView.hidden = YES;
-}
-
--(void)dealloc
-{
-    NSLog(@"bannervc dealloc");
-}
 @end

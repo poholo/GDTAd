@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GDTSplashAd.h"
 
-@interface SplashViewController : UIViewController<GDTSplashAdDelegate>
+
+@interface SplashViewController : UIViewController
 
 @end
